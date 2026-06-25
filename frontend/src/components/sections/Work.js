@@ -1,5 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Reveal } from "@/components/print/Reveal";
 import { SectionHeader } from "@/components/print/SectionHeader";
 import { Stamp } from "@/components/print/Stamp";
@@ -72,23 +77,110 @@ const Tile = ({ item, onOpen }) => (
   </Reveal>
 );
 
+const WorkLightbox = ({ open, item, onClose, onPrev, onNext }) => {
+  // Arrow-key navigation while the lightbox is open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === "ArrowRight") onNext();
+      if (e.key === "ArrowLeft") onPrev();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onPrev, onNext]);
+
+  return (
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent
+        data-testid="work-lightbox-dialog"
+        className="max-w-5xl gap-0 overflow-hidden border-2 border-ink-900 bg-paper-50 p-0 [&>button]:hidden"
+      >
+        {item && (
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            <DialogTitle className="sr-only">
+              {item.title} — {item.subtitle}
+            </DialogTitle>
+            <DialogDescription className="sr-only">{item.blurb}</DialogDescription>
+
+            {/* media */}
+            <div className="relative flex items-center justify-center border-b-2 border-ink-900 bg-ink-900 p-4 md:border-b-0 md:border-r-2">
+              <img
+                src={item.full}
+                alt={`${item.title} \u2014 ${item.subtitle}`}
+                className="max-h-[44vh] w-auto object-contain md:max-h-[80vh]"
+              />
+            </div>
+
+            {/* details */}
+            <div className="flex flex-col">
+              <div className="flex items-center justify-between border-b-2 border-ink-900 px-5 py-3">
+                <span className="font-mono text-[11px] uppercase tracking-[0.26em] text-spot-600">
+                  Plate {item.no}
+                </span>
+                <button
+                  onClick={onClose}
+                  data-testid="work-lightbox-close-button"
+                  aria-label="Close"
+                  className="flex h-8 w-8 items-center justify-center border-2 border-ink-900 text-ink-900 transition-colors hover:bg-ink-900 hover:text-paper-50"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              <div className="flex-1 px-5 py-6">
+                <h3 className="display-tight text-5xl leading-[0.86] text-ink-900">
+                  {item.title}
+                </h3>
+                <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-ink-700">
+                  {item.subtitle} &middot; {item.year}
+                </p>
+                <p className="mt-5 text-sm leading-relaxed text-ink-800">{item.blurb}</p>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {item.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="border border-ink-900 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-800"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* nav */}
+              <div className="flex items-center justify-between border-t-2 border-ink-900">
+                <button
+                  onClick={onPrev}
+                  data-testid="work-lightbox-prev-button"
+                  className="flex flex-1 items-center justify-center gap-2 border-r-2 border-ink-900 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-900 transition-colors hover:bg-paper-200"
+                >
+                  <ChevronLeft size={15} /> Prev
+                </button>
+                <button
+                  onClick={onNext}
+                  data-testid="work-lightbox-next-button"
+                  className="flex flex-1 items-center justify-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-900 transition-colors hover:bg-paper-200"
+                >
+                  Next <ChevronRight size={15} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export const Work = () => {
   const [index, setIndex] = useState(null);
   const open = index !== null;
   const item = open ? WORK[index] : null;
 
+  const close = useCallback(() => setIndex(null), []);
   const next = useCallback(() => setIndex((i) => (i + 1) % WORK.length), []);
   const prev = useCallback(() => setIndex((i) => (i - 1 + WORK.length) % WORK.length), []);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => {
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, next, prev]);
 
   return (
     <section id="work" data-section className="border-b-2 border-ink-900">
@@ -111,86 +203,7 @@ export const Work = () => {
         </div>
       </div>
 
-      {/* Lightbox */}
-      <Dialog open={open} onOpenChange={(o) => !o && setIndex(null)}>
-        <DialogContent
-          data-testid="work-lightbox-dialog"
-          className="max-w-5xl gap-0 overflow-hidden border-2 border-ink-900 bg-paper-50 p-0 [&>button]:hidden"
-        >
-          {item && (
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <DialogTitle className="sr-only">
-                {item.title} — {item.subtitle}
-              </DialogTitle>
-              <DialogDescription className="sr-only">{item.blurb}</DialogDescription>
-              {/* media */}
-              <div className="relative flex items-center justify-center border-b-2 border-ink-900 bg-ink-900 p-4 md:border-b-0 md:border-r-2">
-                <img
-                  src={item.full}
-                  alt={`${item.title} \u2014 ${item.subtitle}`}
-                  className="max-h-[44vh] w-auto object-contain md:max-h-[80vh]"
-                />
-              </div>
-
-              {/* details */}
-              <div className="flex flex-col">
-                <div className="flex items-center justify-between border-b-2 border-ink-900 px-5 py-3">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.26em] text-spot-600">
-                    Plate {item.no}
-                  </span>
-                  <button
-                    onClick={() => setIndex(null)}
-                    data-testid="work-lightbox-close-button"
-                    aria-label="Close"
-                    className="flex h-8 w-8 items-center justify-center border-2 border-ink-900 text-ink-900 transition-colors hover:bg-ink-900 hover:text-paper-50"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-
-                <div className="flex-1 px-5 py-6">
-                  <h3 className="display-tight text-5xl leading-[0.86] text-ink-900">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-ink-700">
-                    {item.subtitle} &middot; {item.year}
-                  </p>
-                  <p className="mt-5 text-sm leading-relaxed text-ink-800">{item.blurb}</p>
-
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {item.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="border border-ink-900 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-800"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* nav */}
-                <div className="flex items-center justify-between border-t-2 border-ink-900">
-                  <button
-                    onClick={prev}
-                    data-testid="work-lightbox-prev-button"
-                    className="flex flex-1 items-center justify-center gap-2 border-r-2 border-ink-900 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-900 transition-colors hover:bg-paper-200"
-                  >
-                    <ChevronLeft size={15} /> Prev
-                  </button>
-                  <button
-                    onClick={next}
-                    data-testid="work-lightbox-next-button"
-                    className="flex flex-1 items-center justify-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-900 transition-colors hover:bg-paper-200"
-                  >
-                    Next <ChevronRight size={15} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <WorkLightbox open={open} item={item} onClose={close} onPrev={prev} onNext={next} />
     </section>
   );
 };

@@ -12,7 +12,18 @@ import { Mail, Phone, Github, Send, Check, Loader2 } from "lucide-react";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const INPUT_CLASS =
+  "mt-2 h-12 rounded-none border-2 border-ink-900 bg-paper-50 font-mono text-sm text-ink-900 placeholder:text-ink-500/70 focus-visible:ring-0 focus-visible:ring-offset-0";
+
+// Pure validation helper: returns an error string, or "" when valid.
+export function validateContact(form) {
+  if (!form.name.trim()) return "Please enter your name.";
+  if (!EMAIL_RE.test(form.email)) return "Please enter a valid email address.";
+  if (form.message.trim().length < 5) return "Your message is a little short.";
+  return "";
+}
 
 const ContactLink = ({ icon: Icon, label, value, href, testid }) => (
   <a
@@ -32,6 +43,46 @@ const ContactLink = ({ icon: Icon, label, value, href, testid }) => (
   </a>
 );
 
+const ContactChannels = () => (
+  <Reveal delay={0.1} className="lg:col-span-5">
+    <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.24em] text-ink-500">
+      Direct Channels
+    </div>
+    <div className="border-t-2 border-ink-900">
+      <ContactLink
+        icon={Mail}
+        label="Email"
+        value={CONTACT.email}
+        href={`mailto:${CONTACT.email}`}
+        testid="contact-email-link"
+      />
+      <ContactLink
+        icon={Phone}
+        label="Phone"
+        value={CONTACT.phone}
+        href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+        testid="contact-phone-link"
+      />
+      <ContactLink
+        icon={Github}
+        label="GitHub"
+        value={CONTACT.github}
+        href={CONTACT.githubUrl}
+        testid="contact-github-link"
+      />
+    </div>
+
+    <div className="mt-8 border-2 border-ink-900 bg-paper-50 p-5">
+      <p className="display-tight text-3xl leading-[0.92] text-ink-900">
+        Got a poster, post or page that needs to hit harder?
+      </p>
+      <p className="mt-3 text-sm leading-relaxed text-ink-700">
+        Fast turnaround. 24&ndash;48 hour delivery. Evenings &amp; weekends, Nepal time.
+      </p>
+    </div>
+  </Reveal>
+);
+
 export const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "", company: "" });
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
@@ -41,11 +92,9 @@ export const Contact = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    setError("");
-
-    if (!form.name.trim()) return setError("Please enter your name.");
-    if (!emailRe.test(form.email)) return setError("Please enter a valid email address.");
-    if (form.message.trim().length < 5) return setError("Your message is a little short.");
+    const validationError = validateContact(form);
+    setError(validationError);
+    if (validationError) return;
 
     setStatus("submitting");
     try {
@@ -65,9 +114,6 @@ export const Contact = () => {
       setError("Something went wrong sending your message. Please try again or email directly.");
     }
   };
-
-  const inputClass =
-    "mt-2 h-12 rounded-none border-2 border-ink-900 bg-paper-50 font-mono text-sm text-ink-900 placeholder:text-ink-500/70 focus-visible:ring-0 focus-visible:ring-offset-0";
 
   return (
     <section id="contact" data-section className="border-b-2 border-ink-900 bg-paper-100">
@@ -102,7 +148,7 @@ export const Contact = () => {
                     value={form.name}
                     onChange={set("name")}
                     placeholder="Your name"
-                    className={inputClass}
+                    className={INPUT_CLASS}
                   />
                 </div>
                 <div>
@@ -116,7 +162,7 @@ export const Contact = () => {
                     value={form.email}
                     onChange={set("email")}
                     placeholder="you@studio.com"
-                    className={inputClass}
+                    className={INPUT_CLASS}
                   />
                 </div>
               </div>
@@ -174,43 +220,7 @@ export const Contact = () => {
           </Reveal>
 
           {/* direct links */}
-          <Reveal delay={0.1} className="lg:col-span-5">
-            <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.24em] text-ink-500">
-              Direct Channels
-            </div>
-            <div className="border-t-2 border-ink-900">
-              <ContactLink
-                icon={Mail}
-                label="Email"
-                value={CONTACT.email}
-                href={`mailto:${CONTACT.email}`}
-                testid="contact-email-link"
-              />
-              <ContactLink
-                icon={Phone}
-                label="Phone"
-                value={CONTACT.phone}
-                href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-                testid="contact-phone-link"
-              />
-              <ContactLink
-                icon={Github}
-                label="GitHub"
-                value={CONTACT.github}
-                href={CONTACT.githubUrl}
-                testid="contact-github-link"
-              />
-            </div>
-
-            <div className="mt-8 border-2 border-ink-900 bg-paper-50 p-5">
-              <p className="display-tight text-3xl leading-[0.92] text-ink-900">
-                Got a poster, post or page that needs to hit harder?
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-700">
-                Fast turnaround. 24&ndash;48 hour delivery. Evenings &amp; weekends, Nepal time.
-              </p>
-            </div>
-          </Reveal>
+          <ContactChannels />
         </div>
       </div>
     </section>

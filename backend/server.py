@@ -6,7 +6,7 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Dict
 import uuid
 from datetime import datetime, timezone
 
@@ -66,12 +66,12 @@ class ContactMessage(BaseModel):
 # Routes
 # ---------------------------------------------------------------------------
 @api_router.get("/")
-async def root():
+async def root() -> Dict[str, str]:
     return {"message": "Hello World"}
 
 
 @api_router.get("/health")
-async def health():
+async def health() -> Dict[str, str]:
     try:
         await db.command("ping")
         return {"status": "ok", "db": "connected"}
@@ -81,7 +81,7 @@ async def health():
 
 
 @api_router.post("/contact", response_model=ContactMessage)
-async def create_contact_message(payload: ContactCreate):
+async def create_contact_message(payload: ContactCreate) -> ContactMessage:
     # Honeypot tripped -> pretend success but do not store.
     if payload.company:
         logger.info("Honeypot triggered on /contact; ignoring submission.")
@@ -108,7 +108,7 @@ async def create_contact_message(payload: ContactCreate):
 
 
 @api_router.get("/contact", response_model=List[ContactMessage])
-async def list_contact_messages(limit: int = 100, skip: int = 0):
+async def list_contact_messages(limit: int = 100, skip: int = 0) -> List[ContactMessage]:
     limit = max(1, min(limit, 500))
     skip = max(0, skip)
     cursor = (
@@ -125,7 +125,7 @@ async def list_contact_messages(limit: int = 100, skip: int = 0):
 
 
 @api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
+async def create_status_check(input: StatusCheckCreate) -> StatusCheck:
     status_dict = input.model_dump()
     status_obj = StatusCheck(**status_dict)
 
@@ -137,7 +137,7 @@ async def create_status_check(input: StatusCheckCreate):
 
 
 @api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
+async def get_status_checks() -> List[StatusCheck]:
     status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
     for check in status_checks:
         if isinstance(check['timestamp'], str):
@@ -165,5 +165,5 @@ logger = logging.getLogger(__name__)
 
 
 @app.on_event("shutdown")
-async def shutdown_db_client():
+async def shutdown_db_client() -> None:
     client.close()

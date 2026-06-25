@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Reveal } from "@/components/print/Reveal";
 import { Stamp } from "@/components/print/Stamp";
 import { CropMarks, RegMark } from "@/components/print/CropMarks";
@@ -12,14 +13,73 @@ const MOTTO_STRIP = [
   "ADAPT",
   "ASCEND",
 ];
+// Doubled so the marquee can loop seamlessly.
+const MARQUEE = [...MOTTO_STRIP, ...MOTTO_STRIP];
 
 const goTo = (id) => {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
+const MarqueeStrip = () => (
+  <div className="overflow-hidden border-t-2 border-ink-900 bg-ink-900 py-2.5">
+    <div className="marquee-track">
+      {MARQUEE.map((m, i) => (
+        <span
+          key={`${m}-${i}`}
+          className="mx-5 font-mono text-[11px] font-semibold uppercase tracking-[0.3em] text-paper-50"
+        >
+          {m} <span className="text-spot-400">//</span>
+        </span>
+      ))}
+    </div>
+  </div>
+);
+
+const IssueContents = ({ items, onNavigate }) => (
+  <div className="pointer-events-none absolute right-0 top-1 hidden w-72 lg:block">
+    <Reveal delay={0.15}>
+      <div className="pointer-events-auto border-2 border-ink-900 bg-paper-50/85 backdrop-blur-[1px]">
+        <div className="flex items-center justify-between border-b-2 border-ink-900 px-4 py-2.5">
+          <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-ink-900">
+            In This Issue
+          </span>
+          <RegMark accent size={14} />
+        </div>
+        <ul>
+          {items.map((n) => (
+            <li key={n.id} className="border-b border-[color:var(--rule)] last:border-b-0">
+              <button
+                onClick={() => onNavigate(n.id)}
+                data-testid={`hero-contents-link-${n.id}`}
+                className="group flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-paper-100"
+              >
+                <span className="font-mono text-[11px] text-spot-600">{n.num}</span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-800">
+                  {n.label}
+                </span>
+                <span className="leader" />
+                <ArrowUpRight
+                  size={13}
+                  className="shrink-0 text-ink-500 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-spot-600"
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="border-t-2 border-ink-900 px-4 py-2">
+          <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink-700">
+            KATHMANDU &rarr; REMOTE
+          </span>
+        </div>
+      </div>
+    </Reveal>
+  </div>
+);
+
 export const Hero = () => {
-  const strip = [...MOTTO_STRIP, ...MOTTO_STRIP];
+  const contents = useMemo(() => NAV.filter((n) => n.id !== "cover"), []);
+
   return (
     <section id="cover" data-section className="relative overflow-hidden border-b-2 border-ink-900">
       {/* halftone wash on the right */}
@@ -84,44 +144,7 @@ export const Hero = () => {
           </div>
 
           {/* right rail — editorial "in this issue" contents */}
-          <div className="pointer-events-none absolute right-0 top-1 hidden w-72 lg:block">
-            <Reveal delay={0.15}>
-              <div className="pointer-events-auto border-2 border-ink-900 bg-paper-50/85 backdrop-blur-[1px]">
-                <div className="flex items-center justify-between border-b-2 border-ink-900 px-4 py-2.5">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-ink-900">
-                    In This Issue
-                  </span>
-                  <RegMark accent size={14} />
-                </div>
-                <ul>
-                  {NAV.filter((n) => n.id !== "cover").map((n) => (
-                    <li key={n.id} className="border-b border-[color:var(--rule)] last:border-b-0">
-                      <button
-                        onClick={() => goTo(n.id)}
-                        data-testid={`hero-contents-link-${n.id}`}
-                        className="group flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-paper-100"
-                      >
-                        <span className="font-mono text-[11px] text-spot-600">{n.num}</span>
-                        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-800">
-                          {n.label}
-                        </span>
-                        <span className="leader" />
-                        <ArrowUpRight
-                          size={13}
-                          className="shrink-0 text-ink-500 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-spot-600"
-                        />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <div className="border-t-2 border-ink-900 px-4 py-2">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink-700">
-                    KATHMANDU &rarr; REMOTE
-                  </span>
-                </div>
-              </div>
-            </Reveal>
-          </div>
+          <IssueContents items={contents} onNavigate={goTo} />
         </div>
 
         {/* bottom block: availability + motto + scroll cue */}
@@ -166,19 +189,7 @@ export const Hero = () => {
         </Reveal>
       </div>
 
-      {/* marquee strip */}
-      <div className="overflow-hidden border-t-2 border-ink-900 bg-ink-900 py-2.5">
-        <div className="marquee-track">
-          {strip.map((m, i) => (
-            <span
-              key={i}
-              className="mx-5 font-mono text-[11px] font-semibold uppercase tracking-[0.3em] text-paper-50"
-            >
-              {m} <span className="text-spot-400">//</span>
-            </span>
-          ))}
-        </div>
-      </div>
+      <MarqueeStrip />
     </section>
   );
 };

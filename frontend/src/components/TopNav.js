@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -20,8 +20,36 @@ const Bird = () => (
   </svg>
 );
 
+const NavLink = ({ section, active, onClick }) => {
+  const isActive = active === section.id;
+  return (
+    <button
+      onClick={onClick}
+      data-testid={`nav-link-${section.id}`}
+      className="group relative font-mono text-[11px] uppercase tracking-[0.18em] transition-colors"
+      style={{ color: isActive ? "var(--ink-900)" : "var(--ink-500)" }}
+    >
+      <span className="inline-flex items-center gap-1.5">
+        <span
+          className="inline-block h-1.5 w-1.5 transition-all"
+          style={{
+            background: isActive ? "var(--spot-500)" : "transparent",
+            border: isActive ? "none" : "1px solid var(--rule)",
+          }}
+        />
+        {section.label}
+      </span>
+      <span
+        className="absolute -bottom-1 left-0 h-0.5 bg-ink-900 transition-all duration-300"
+        style={{ width: isActive ? "100%" : "0%" }}
+      />
+    </button>
+  );
+};
+
 export const TopNav = ({ active }) => {
   const [open, setOpen] = useState(false);
+  const sections = useMemo(() => NAV.filter((n) => n.id !== "cover"), []);
 
   const go = (id) => {
     setOpen(false);
@@ -49,33 +77,9 @@ export const TopNav = ({ active }) => {
 
         {/* Inline nav (desktop) */}
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Sections">
-          {NAV.filter((n) => n.id !== "cover").map((n) => {
-            const isActive = active === n.id;
-            return (
-              <button
-                key={n.id}
-                onClick={() => go(n.id)}
-                data-testid={`nav-link-${n.id}`}
-                className="group relative font-mono text-[11px] uppercase tracking-[0.18em] transition-colors"
-                style={{ color: isActive ? "var(--ink-900)" : "var(--ink-500)" }}
-              >
-                <span className="inline-flex items-center gap-1.5">
-                  <span
-                    className="inline-block h-1.5 w-1.5 transition-all"
-                    style={{
-                      background: isActive ? "var(--spot-500)" : "transparent",
-                      border: isActive ? "none" : "1px solid var(--rule)",
-                    }}
-                  />
-                  {n.label}
-                </span>
-                <span
-                  className="absolute -bottom-1 left-0 h-0.5 bg-ink-900 transition-all duration-300"
-                  style={{ width: isActive ? "100%" : "0%" }}
-                />
-              </button>
-            );
-          })}
+          {sections.map((n) => (
+            <NavLink key={n.id} section={n} active={active} onClick={() => go(n.id)} />
+          ))}
         </nav>
 
         {/* Right cluster */}
