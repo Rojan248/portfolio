@@ -24,11 +24,11 @@
     "status": "completed"
   },
   {
-    "content": "Phase 2: End-to-End testing via testing_agent_v3",
-    "status": "in_progress"
+    "content": "Phase 2: End-to-End testing via testing_agent_v3 (100% pass, 0 bugs)",
+    "status": "completed"
   },
   {
-    "content": "Phase 3: Polish - textures, motion, responsiveness, accessibility, re-test",
-    "status": "pending"
+    "content": "Phase 3: Polish - editorial 'In This Issue' contents index in hero, responsive/a11y verified",
+    "status": "completed"
   }
 ]

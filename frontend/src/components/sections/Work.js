@@ -3,50 +3,47 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Reveal } from "@/components/print/Reveal";
 import { SectionHeader } from "@/components/print/SectionHeader";
 import { Stamp } from "@/components/print/Stamp";
-import { SpecPlate } from "@/components/SpecPlate";
 import { WORK } from "@/data/content";
 import { ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
+// Right-column tiles get a downward stagger for an editorial rhythm.
 const layoutClass = {
-  summit: "lg:col-span-7",
-  "the-rocks": "lg:col-span-5 lg:mt-24",
-  aprilia: "lg:col-span-5 lg:mt-24",
-  porsche: "lg:col-span-7",
+  summit: "",
+  "the-rocks": "lg:mt-20",
+  aprilia: "",
+  porsche: "lg:mt-20",
 };
 
 const Tile = ({ item, onOpen }) => (
-  <Reveal className={layoutClass[item.id] || "lg:col-span-6"}>
+  <Reveal className={layoutClass[item.id] || ""}>
     <button
       data-testid={`work-card-${item.id}`}
       onClick={onOpen}
       className="group block w-full text-left"
       aria-label={`Open ${item.title}`}
     >
-      <div className="relative overflow-hidden border-2 border-ink-900 bg-paper-100 distress">
+      <div className="relative overflow-hidden border-2 border-ink-900 bg-ink-900 distress">
         {/* media */}
-        <div className="relative aspect-[3/4] w-full overflow-hidden" style={{ containerType: "inline-size" }}>
-          {item.kind === "image" ? (
-            <img
-              src={item.thumb}
-              alt={`${item.title} \u2014 ${item.subtitle}`}
-              loading="lazy"
-              className="h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-            />
-          ) : (
-            <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.02]">
-              <SpecPlate data={item} variant="thumb" />
-            </div>
-          )}
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ aspectRatio: item.ratio || "1024 / 1536" }}
+        >
+          <img
+            src={item.thumb}
+            alt={`${item.title} \u2014 ${item.subtitle}`}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          />
           {/* hover veil + view stamp */}
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-ink-900/0 opacity-0 transition-all duration-300 group-hover:bg-ink-900/10 group-hover:opacity-100">
-            <span className="translate-y-2 transition-transform duration-300 group-hover:translate-y-0">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-ink-900/0 opacity-0 transition-all duration-300 group-hover:bg-ink-900/25 group-hover:opacity-100">
+            <span className="translate-y-2 bg-paper-50/95 transition-transform duration-300 group-hover:translate-y-0">
               <Stamp accent rotate={-6}>View &middot; {item.no}</Stamp>
             </span>
           </div>
         </div>
 
         {/* metadata strip */}
-        <div className="flex items-center justify-between border-t-2 border-ink-900 px-4 py-2.5">
+        <div className="flex items-center justify-between border-t-2 border-ink-900 bg-paper-50 px-4 py-2.5">
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
             {item.category}
           </span>
@@ -107,7 +104,7 @@ export const Work = () => {
           }
         />
 
-        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2">
           {WORK.map((w, i) => (
             <Tile key={w.id} item={w} onOpen={() => setIndex(i)} />
           ))}
@@ -123,18 +120,12 @@ export const Work = () => {
           {item && (
             <div className="grid grid-cols-1 md:grid-cols-2">
               {/* media */}
-              <div className="relative flex items-center justify-center border-b-2 border-ink-900 bg-paper-100 p-4 md:border-b-0 md:border-r-2">
-                {item.kind === "image" ? (
-                  <img
-                    src={item.full}
-                    alt={`${item.title} \u2014 ${item.subtitle}`}
-                    className="max-h-[44vh] w-auto object-contain md:max-h-[78vh]"
-                  />
-                ) : (
-                  <div className="aspect-[3/4] w-full max-w-[340px] border-2 border-ink-900">
-                    <SpecPlate data={item} variant="full" />
-                  </div>
-                )}
+              <div className="relative flex items-center justify-center border-b-2 border-ink-900 bg-ink-900 p-4 md:border-b-0 md:border-r-2">
+                <img
+                  src={item.full}
+                  alt={`${item.title} \u2014 ${item.subtitle}`}
+                  className="max-h-[44vh] w-auto object-contain md:max-h-[80vh]"
+                />
               </div>
 
               {/* details */}
