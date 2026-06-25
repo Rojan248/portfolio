@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Reveal } from "@/components/print/Reveal";
 import { SectionHeader } from "@/components/print/SectionHeader";
 import { Stamp } from "@/components/print/Stamp";
@@ -119,6 +119,10 @@ export const Work = () => {
         >
           {item && (
             <div className="grid grid-cols-1 md:grid-cols-2">
+              <DialogTitle className="sr-only">
+                {item.title} — {item.subtitle}
+              </DialogTitle>
+              <DialogDescription className="sr-only">{item.blurb}</DialogDescription>
               {/* media */}
               <div className="relative flex items-center justify-center border-b-2 border-ink-900 bg-ink-900 p-4 md:border-b-0 md:border-r-2">
                 <img

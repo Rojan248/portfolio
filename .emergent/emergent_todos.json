@@ -4,31 +4,35 @@
     "status": "completed"
   },
   {
-    "content": "Phase 1: Download 2 poster assets into frontend/public + install fonts/libs",
+    "content": "Phase 1: Download poster assets + install fonts/libs",
     "status": "completed"
   },
   {
-    "content": "Phase 2: Backend - contact message model + POST/GET /api/contact + health",
+    "content": "Phase 2: Backend contact API (POST/GET /api/contact + health)",
     "status": "completed"
   },
   {
-    "content": "Phase 2: Frontend - full zine editorial redesign (hero, about, work gallery, github, skills, education, contact)",
+    "content": "Phase 2: Frontend full zine editorial redesign + lightbox + contact form",
     "status": "completed"
   },
   {
-    "content": "Phase 2: Lightbox for posters + functional contact form wiring + states",
+    "content": "Phase 2: End-to-End testing via testing_agent_v3 (100% pass)",
     "status": "completed"
   },
   {
-    "content": "Phase 2: All user stories covered in Development",
+    "content": "Phase 3: Polish - hero 'In This Issue' contents index",
     "status": "completed"
   },
   {
-    "content": "Phase 2: End-to-End testing via testing_agent_v3 (100% pass, 0 bugs)",
+    "content": "Bug fix: Add real Aprilia RSV4 + Porsche 911 GT3 RS poster images to Selected Work",
     "status": "completed"
   },
   {
-    "content": "Phase 3: Polish - editorial 'In This Issue' contents index in hero, responsive/a11y verified",
+    "content": "Verify bug fix via testing_agent_v3 (VERIFIED: images load, lightbox + regressions pass)",
+    "status": "completed"
+  },
+  {
+    "content": "A11y: add sr-only DialogTitle/Description to lightbox",
     "status": "completed"
   }
 ]
