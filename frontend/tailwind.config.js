@@ -7,12 +7,37 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Bebas Neue"', 'Impact', 'sans-serif'],
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace']
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
       },
       colors: {
+        ink: {
+          DEFAULT: '#11110F',
+          900: '#11110F',
+          800: '#1A1A17',
+          700: '#2A2A25',
+          500: '#4A4A43'
+        },
+        paper: {
+          DEFAULT: '#FBF6EA',
+          50: '#FBF6EA',
+          100: '#F6EEDC',
+          200: '#EDE1C7',
+          300: '#E2D3B3'
+        },
+        spot: {
+          DEFAULT: '#12A66B',
+          600: '#0E8A5A',
+          500: '#12A66B',
+          400: '#2BCB86'
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
