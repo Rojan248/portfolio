@@ -8,12 +8,12 @@ export const PROFILE = {
   issue: "ISSUE No. 01",
   volume: "VOL. 2026",
   about:
-    "I'm a creative designer with a strong eye for typography, layout, and brand identity. I build high-impact visuals for social media, promotions, and product showcases using Canva Pro and Figma. I'm also a self-taught developer with hands-on projects in Python, JavaScript, and web automation \u2014 bridging design with code.",
+    "I'm a developing visual designer with a strong interest in typography, composition, and clear communication. My portfolio includes promotional graphics and technical product visuals. I also build projects in Python, JavaScript, and web development \u2014 connecting visual thinking with implementation.",
   availability: {
     headline: "Available for Part-Time Remote Work",
     lines: [
-      "Evenings & Weekends (Nepal) \u2014 aligns with US / UK morning shifts.",
-      "Fast turnaround. 24\u201348 hour delivery.",
+      "Available after classes, during evenings, and on weekends.",
+      "10\u201315 hours per week for flexible remote work.",
     ],
   },
   motto: ["ELEVATE", "ADAPT", "ASCEND"],
@@ -49,7 +49,7 @@ export const WORK = [
     ratio: "1055 / 1491",
     category: "Editorial / Cover",
     year: "2026",
-    tags: ["Editorial", "Poster", "Typography", "Photoshop"],
+    tags: ["Editorial", "Poster", "Typography", "Image Treatment"],
     blurb:
       "A vintage-print magazine cover for a competitive gaming season. Distressed paper stock, halftone landscape, an oversized broken masthead and a single green spot color \u2014 finished with a die-cut LIMITED EDITION stamp.",
   },
@@ -79,7 +79,7 @@ export const WORK = [
     ratio: "1024 / 1536",
     category: "Automotive / Technical",
     year: "2024",
-    tags: ["Automotive", "Technical Poster", "Typography", "Canva Pro"],
+    tags: ["Automotive", "Technical Poster", "Typography", "Information Design"],
     blurb:
       "High-impact product poster with bold split-color layout and full technical-data visualization. A carbon-fiber Factory edition treatment, designed for both digital feeds and print-ready output.",
   },
@@ -94,7 +94,7 @@ export const WORK = [
     ratio: "1055 / 1491",
     category: "Automotive / Brand",
     year: "2025",
-    tags: ["Automotive", "Promotional", "Brand Identity", "Figma"],
+    tags: ["Automotive", "Promotional", "Visual Hierarchy", "Spec Poster"],
     blurb:
       "Brand-aligned product showcase with an oversized '911' numeral, a clean technical-data column and a striking black / red palette. Optimized for social media and promotional use.",
   },
@@ -133,15 +133,15 @@ export const REPOS = [
 
 export const SKILLS = [
   {
-    label: "Design Tools",
-    items: ["Canva Pro", "Figma", "Adobe Photoshop", "Adobe Illustrator"],
-    highlight: "Canva Pro",
+    label: "Design Practice",
+    items: ["Typography", "Layout", "Promotional Graphics", "Technical Posters", "Basic UI Concepts"],
+    highlight: "Typography",
   },
   {
     label: "Specialties",
     items: [
       "Social Media Graphics",
-      "Brand Identity",
+      "Brand-Aware Visuals",
       "Promotional Posters",
       "Technical Visuals",
       "Infographics",
@@ -155,7 +155,7 @@ export const SKILLS = [
   },
   {
     label: "Soft Skills",
-    items: ["Fast Turnaround", "Self-Directed", "Detail-Oriented", "Remote-Ready"],
+    items: ["Responsive to Feedback", "Self-Directed", "Detail-Oriented", "Remote-Ready"],
     highlight: "Remote-Ready",
   },
 ];
