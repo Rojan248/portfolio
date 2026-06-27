@@ -163,6 +163,6 @@ export const SKILLS = [
 export const EDUCATION = {
   program: "A LEVELS",
   school: "Islington College, Kathmandu",
-  timeline: "2024 \u2014 Present",
+  timeline: "2025 \u2014 Present",
   subjects: ["Computer Science", "Economics", "Mathematics", "General Paper (GP)"],
 };
