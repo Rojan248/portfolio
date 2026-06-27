@@ -155,8 +155,7 @@ export const Hero = () => {
                 Open to Work
               </Stamp>
               <p className="max-w-md text-sm leading-relaxed text-ink-800">
-                Part-time remote, evenings &amp; weekends (Nepal) &mdash; aligned with US / UK
-                mornings. <span className="font-semibold">24&ndash;48h delivery.</span>
+                Flexible remote work after classes, during evenings, and on weekends &mdash; 10&ndash;15 hours weekly.
               </p>
             </div>
           </Reveal>

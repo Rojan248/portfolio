@@ -77,7 +77,7 @@ const ContactChannels = () => (
         Got a poster, post or page that needs to hit harder?
       </p>
       <p className="mt-3 text-sm leading-relaxed text-ink-700">
-        Fast turnaround. 24&ndash;48 hour delivery. Evenings &amp; weekends, Nepal time.
+        Available after classes, during evenings, and on weekends for flexible remote work.
       </p>
     </div>
   </Reveal>

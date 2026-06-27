@@ -38,7 +38,7 @@ function Portfolio() {
   }, []);
 
   return (
-    <div className="App min-h-screen bg-paper-50 text-ink-900 antialiased">
+    <div data-content-revision="2026-06-27-accurate-profile" className="App min-h-screen bg-paper-50 text-ink-900 antialiased">
       <TopNav active={active} />
       <main>
         <Hero />

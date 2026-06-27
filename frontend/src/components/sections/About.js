@@ -31,7 +31,7 @@ export const About = () => {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t-2 border-ink-900 pt-5">
-              {["Typography", "Layout", "Brand Identity", "Design + Code"].map((t) => (
+              {["Typography", "Layout", "Visual Hierarchy", "Design + Code"].map((t) => (
                 <span key={t} className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-700">
                   <span className="mr-2 text-spot-600">+</span>
                   {t}
